@@ -30,11 +30,24 @@ module.exports = {
         ],
       },
       {
-        test: /\.(ttf|eot|svg|png|jpg|gif|ico|woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/i,
+        test: /\.(svg|png|jpg|gif|ico)(\?v=[0-9]\.[0-9]\.[0-9])?$/i,
         use: [
           {
             loader: "file-loader",
             options: {
+              esModule: false,
+              outputPath: "./images/",
+            },
+          },
+        ],
+      },
+      {
+        test: /\.(ttf|woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/i,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              outputPath: "./vendor/fonts/",
               esModule: false,
             },
           },
@@ -46,9 +59,9 @@ module.exports = {
           {
             loader: "image-webpack-loader",
             options: {
-              name: "[path][name].[ext]",
+              name: "[path][chunkhash].[ext]",
               bypassOnDebug: true,
-              disable: true,
+              disable: false,
             },
           },
         ],
@@ -57,7 +70,7 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: "index.css",
+      filename: "[chunkhash].css",
     }),
     new OptimizeCssAssetsPlugin({
       assetNameRegExp: /\.css$/g,
